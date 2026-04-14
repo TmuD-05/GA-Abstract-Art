@@ -79,9 +79,10 @@ def extract_emotion_features(file_path, use_average_tempo=True):
     if duration_seconds > 0:
         note_density = unique_onsets / duration_seconds
     else:
-        0
-    complexity = (note_density / 15.0)
-    complexity = max(0.0, min(complexity, 1.0))
+        note_density = 0
+
+    density = (note_density / 15.0)
+    density = max(0.0, min(density, 1.0))
 
     velocities_by_instrument = defaultdict(list)
 
@@ -114,18 +115,20 @@ def extract_emotion_features(file_path, use_average_tempo=True):
             normalized = (v - v_min) / v_range
             normalized_velocities.append(normalized)
 
+    """
     brightness = (
         sum(normalized_velocities) / len(normalized_velocities)
         if normalized_velocities
         else 0.5
     )
+    """
 
 
     features = {
         'energy': round(energy, 3),
         'valence': round(valence, 3),
-        'complexity': round(complexity, 3),
-        'brightness': round(brightness, 3),
+        'density': round(density, 3),
+        #'brightness': round(brightness, 3),
 
         # Metadata for debugging
         'metadata': {

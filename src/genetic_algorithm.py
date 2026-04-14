@@ -24,7 +24,7 @@ def ga_main():
 
   for generation in range (GENERATIONS):
        new_population = []
-    
+
 #elitism
        best = population[0]
        for i in range(len(population)):
