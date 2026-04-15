@@ -15,8 +15,8 @@ fitness function.
 """
 
 import numpy as np
-from palettes import PALETTES
-
+from src.palettes import PALETTES
+#  this is going to be bugging cause valence isjsut returning minor so 0 then there is no range its either a zero or 1
 def pick_palette(valence):
     if valence < 0.4:
         low, high = 1, 5

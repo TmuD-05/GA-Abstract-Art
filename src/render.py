@@ -17,7 +17,7 @@ import cv2
 import os
 from opensimplex import noise2
 from datetime import datetime
-from palettes import PALETTES
+from src.palettes import PALETTES
 
 def interpolate_colour(t, palette):
     scaled = t * (len(palette) - 1)
