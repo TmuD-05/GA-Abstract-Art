@@ -28,8 +28,27 @@ def create_population(n):
   return population
 
 
+def tournament_selection(population, target, k):
+  group = []
 
-# main ga algorithm
+# getting k random individuals from population and adding to group, the best out of group will be selected as a parent 
+  for i in range(k):
+    index = random.randint(0, len(population) - 1)
+    group.append(population[index])
+
+  best = group[0]
+
+# selecting the one with highest fitness among k individulas in group, the best will be returned as the selected parent
+  for i in range(1, k):
+    if check_fitness(group[i], target) > check_fitness(best, target):
+      best = group[i]
+
+  return best
+
+
+
+
+
 def ga_main():
   target = {}
 
