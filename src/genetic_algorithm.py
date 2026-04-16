@@ -17,6 +17,19 @@ chromosome matches the emotional features of the input music.
 The output is the best-performing chromosome representing the final image.
 """
 
+
+# creating population of size n
+def create_population(n):
+  population = []
+
+# adding n number of chromosomes to population
+  for i in range(n):
+    population.append(build_chromosome))
+  return population
+
+
+
+# main ga algorithm
 def ga_main():
   target = {}
 
