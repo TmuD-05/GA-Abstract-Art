@@ -20,7 +20,7 @@ def calculate_fitness(chromosome, target_features):
 
         ideal_p = 1 + (target_features['valence'] * 8)
 
-        dev_p = abs(ideal_p - chromosome["pallete_id"])
+        dev_p = abs(ideal_p - chromosome["palette_id"])
 
         max_error_p = max(abs(ideal_p - 1),abs(ideal_p - 5))
 
@@ -29,7 +29,7 @@ def calculate_fitness(chromosome, target_features):
     else:
         ideal_p = 6 + (18 * (target_features['valence'] - 0.5))
 
-        dev_p = abs(ideal_p - chromosome["pallete_id"])
+        dev_p = abs(ideal_p - chromosome["palette_id"])
 
         max_error_p = max(abs(ideal_p - 6),abs(ideal_p - 15))
 
@@ -38,7 +38,7 @@ def calculate_fitness(chromosome, target_features):
 
     # octave
     ideal_o = 1 + (target_features['density'] * 5)
-    dev_o = abs(ideal_o - chromosome["octave"])
+    dev_o = abs(ideal_o - chromosome["octaves"])
     max_error_o = max(abs(ideal_o - 1), abs(ideal_o - 6))
     octave_score = max(0,1 - dev_o / max_error_o)
 
