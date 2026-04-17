@@ -18,14 +18,10 @@ import numpy as np
 from src.palettes import PALETTES
 #  this is going to be bugging cause valence isjsut returning minor so 0 then there is no range its either a zero or 1
 def pick_palette(valence):
-    if valence < 0.4:
+    if valence < 0.5:
         low, high = 1, 5
-
-    elif valence < 0.6:
-        low, high = 6, 10
-
     else:
-        low, high = 11, 15
+        low, high = 6, 15
 
     return np.random.randint(low, high + 1)
 
@@ -76,7 +72,7 @@ def build_chromosome(features: dict) -> dict:
 
         #these values we have to decide if we want to keep the same ones per generation or give each chromosome a diff one
         #all the seed does is ensure we dont have the exact same 'flow pattern' each time, so each seed value has a different 'flow pattern'
-        "seed_x": np.random.uniform(0, 10000),
+        "seed_x": np.random.uniform(0, 1000),
         "seed_y": np.random.uniform(0, 10000),
 
     }
