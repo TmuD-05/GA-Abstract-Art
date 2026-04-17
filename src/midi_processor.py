@@ -60,8 +60,12 @@ def get_valence(all_notes):
         valence = 0.5
 
     pitches = [n.pitch.ps for n in all_notes if hasattr(n, 'pitch')]
+    print(" this is the sum of pitches", sum(pitches))
+
     avg_pitch = sum(pitches) / len(pitches)
+    print("avg_pitch", avg_pitch)
     valence = (avg_pitch - 40) / (80 - 40)
+    print("valence", valence)
     valence = max(0.0, min(valence, 1.0))
 
     return valence
