@@ -1,4 +1,9 @@
-
+FITNESS_WEIGHTS = {
+    'palette': 0.35,
+    'scale': 0.25,
+    'warp': 0.25,
+    'octave': 0.15
+}
 def calculate_fitness(chromosome, target_features):
     # scale
 
@@ -15,8 +20,8 @@ def calculate_fitness(chromosome, target_features):
 
     scale_score = max(0,1 - dev_s /max_error_s)
 
-    # pallete
-    if(target_features['valence'] <= 0.5):
+    # palette
+    if(target_features['valence'] < 0.5):
 
         ideal_p = 1 + (target_features['valence'] * 8)
 
@@ -24,7 +29,7 @@ def calculate_fitness(chromosome, target_features):
 
         max_error_p = max(abs(ideal_p - 1),abs(ideal_p - 5))
 
-        pallette_score = max(0,1 - dev_p / max_error_p)
+        palette_score = max(0,1 - dev_p / max_error_p)
 
     else:
         ideal_p = 6 + (18 * (target_features['valence'] - 0.5))
@@ -33,7 +38,7 @@ def calculate_fitness(chromosome, target_features):
 
         max_error_p = max(abs(ideal_p - 6),abs(ideal_p - 15))
 
-        pallette_score = max(0, 1 - dev_p / max_error_p)
+        palette_score = max(0, 1 - dev_p / max_error_p)
 
 
     # octave
@@ -51,11 +56,16 @@ def calculate_fitness(chromosome, target_features):
 
     dev_w = abs(ideal_w - chromosome["warp_strength"])
 
-    max_error_s = max(abs(ideal_w - warp_start), abs(ideal_w - warp_end))
+    max_error_w = max(abs(ideal_w - warp_start), abs(ideal_w - warp_end))
 
-    warp_score = max(0,1 - dev_w / max_error_s)
+    warp_score = max(0,1 - dev_w / max_error_w)
 
-    fitness_score = pallette_score * 0.4 + scale_score * 0.2 + warp_score * 0.2 + octave_score * 0.2
+    fitness_score = (
+            palette_score * FITNESS_WEIGHTS['palette'] +
+            scale_score * FITNESS_WEIGHTS['scale'] +
+            warp_score * FITNESS_WEIGHTS['warp'] +
+            octave_score * FITNESS_WEIGHTS['octave']
+    )
     return fitness_score
 
 
