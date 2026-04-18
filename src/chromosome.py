@@ -4,40 +4,37 @@ chromosome.py
 This module defines the data structures used to represent an image
 in the genetic algorithm.
 
-Each chromosome consists of a collection of shapes, where each shape
-has attributes such as position, size, color, and opacity.
-
-This module does not implement any algorithmic logic; it only defines
-how image data is structured and stored.
-
 These structures are used by the genetic algorithm, renderer, and
 fitness function.
 """
 
 import numpy as np
-from src.palettes import PALETTES
-#  this is going to be bugging cause valence isjsut returning minor so 0 then there is no range its either a zero or 1
-def pick_palette(valence):
-    if valence < 0.5:
-        low, high = 1, 5
-    else:
-        low, high = 6, 15
 
-    return np.random.randint(low, high + 1)
+def pick_palette(valence, energy):
+    if valence < 0.4: #made this 0.4 from 0.5 due to our valence calculation issues
+        start, end = 1, 10 # darker, moodier, cooler palettes
+
+    else:
+        if energy < 0.7: #need to test smt like edm music and see what is scores for valence
+            start, end = 11, 15 # happy but not intense
+        else:
+            start, end = 16, 21 # neon / intense
+
+    return np.random.randint(start, end + 1)
 
 def pick_scale(energy):
-    # energy 0.0 = range 150-200, larger shapes, less going on
-    # energy 1.0 = range 75-100, smaller, tighter shapes, more chaotic
-    # total range should be 75 - 200
-    start = int(200 - energy * 125)
-    end = int(300 - energy * 220)
+    if energy < 0.3:
+        return np.random.uniform(170, 200)
+    elif energy < 0.7:
+        return np.random.uniform(120, 150)
+    else:
+        return np.random.uniform(75, 100)
 
-    return np.random.uniform(start, end)
 
+ # high density = high octaves, low density = low octaves
+# density 0.0 = 1-2 (simple, smooth)
+# density 1.0 = 5-6 (more complex, chaotic)
 def pick_octaves(density):
-    # high density = high octaves, low density = low octaves
-    # density 0.0 = 1-2 (simple, smooth)
-    # density 1.0 = 5-6 (more complex, chaotic)
 
     start = max(1, round(density * 5))
     end = min(6, round(1 + density * 5))
@@ -47,15 +44,15 @@ def pick_octaves(density):
 
     return np.random.randint(start, end + 1)
 
+# high energy = more warp, more distortion
+# low energy = less warp, smoother, calmer
 def pick_warp_strength(energy):
-    # high energy = more warp, more distortion
-    # low energy = less warp, smoother, calmer
-    # energy 0.0 = 20-50
-    # energy 1.0 = 150-180
-    start = 20 + energy * 130
-    end = 50 + energy * 130
-
-    return np.random.uniform(start, end)
+    if energy < 0.3:
+        return np.random.uniform(20, 35)
+    elif energy < 0.7:
+        return np.random.uniform(55, 75)
+    else:
+        return np.random.uniform(110, 140)
 
 def build_chromosome(features: dict) -> dict:
 
@@ -64,10 +61,10 @@ def build_chromosome(features: dict) -> dict:
     density = features['density']
 
     chromosome = {
-        "palette_id": pick_palette(valence),
+        "palette_id": pick_palette(valence, energy),
         "scale": pick_scale(energy),
         "octaves": pick_octaves(density),
-        "persistence": np.random.uniform(0.3, 0.8), #could possibly get rid of this, i personally think it does nothing
+        "persistence": np.random.uniform(0.3, 0.8), # we could possibly make this a calculation dependent on density
         "warp_strength": pick_warp_strength(energy),
 
         #these values we have to decide if we want to keep the same ones per generation or give each chromosome a diff one
