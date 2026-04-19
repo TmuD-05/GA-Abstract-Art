@@ -1,3 +1,13 @@
+
+"""
+mutation.py
+
+Randomly adjusts chromosome values to introduce variation in the population.
+Decimal values are nudged by small amounts, while discrete values jump to a neighbouring option.
+All values are clipped to stay within valid ranges.
+
+    """
+
 import numpy as np
 
 MUTATION_RATE = {
@@ -7,19 +17,6 @@ MUTATION_RATE = {
    "octaves": 0.2,
    "persistence": 0.05,
 }
-
-"""
-    Randomly changes chromosome traits so the GA can explore new artistic styles. 
-
-    This function uses two different methods for mutation:
-    1. Small 'nudges' for decimal-based numbers (Scale, Warp, Persistence) to 
-       fine-tune the artistic details.
-    2. Fixed 'jumps' for whole numbers (Palette, Octaves) to try out 
-       different categories.
-
-    Finally, it uses clipping to make sure the values never go out of bounds, 
-    which prevents the image generator from crashing or producing errors.
-    """
 def mutation(chromosome):
     mutated = chromosome.copy()
 

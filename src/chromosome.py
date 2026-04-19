@@ -1,11 +1,10 @@
 """
 chromosome.py
 
-This module defines the data structures used to represent an image
-in the genetic algorithm.
-
-These structures are used by the genetic algorithm, renderer, and
-fitness function.
+Defines the chromosome structure used in the genetic algorithm.
+Each chromosome holds the visual parameters used to render an image, such as colour palette, scale, 
+warp strength, and noise settings.
+Initial values are chosen based on the musical features extracted from the MIDI.
 """
 
 import numpy as np

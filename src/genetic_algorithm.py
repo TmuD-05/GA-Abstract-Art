@@ -1,19 +1,9 @@
 """
 genetic_algorithm.py
 
-This module implements the genetic algorithm used to evolve abstract images.
-It generates an initial population of chromosomes (image representations)
-and iteratively improves them over multiple generations.
-
-Key operations include:
-- Selection (tournament)
-- Crossover (combining parent chromosomes)
-- Mutation (random variation)
-
-The algorithm uses the fitness function to evaluate how well each
-chromosome matches the emotional features of the input music.
-
-The output is the best-performing chromosome representing the final image.
+Runs the genetic algorithm to evolve the best chromosome over many generations.
+Each generation uses tournament selection, crossover, and mutation to improve the population.
+Elitism keeps the best chromosome from each generation.
 """
 
 from src.chromosome import build_chromosome

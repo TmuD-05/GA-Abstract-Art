@@ -1,8 +1,9 @@
 """
-    Palettes for colour schemes.
-    Numbered in order from 1 being the 'saddest' colour palette to n being the 'happiest' colour palette.
-    Palettes are defines as lists of BGR tuples, which can be used with OpenCV.
+palettes.py
 
+Defines a set of 25 colour palettes used to render images.
+Palettes are ordered from more cool and dark colours to brighter and intense colours.
+Each palette is a list of BGR colour tuples for use with OpenCV.
     """
 
 PALETTE_1 = [

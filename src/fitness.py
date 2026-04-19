@@ -1,12 +1,9 @@
 """
-Calculate fitness score based on how well chromosome matches target features.
+fitness.py
 
-Args:
-    chromosome: Dict with palette_id, scale, warp_strength, octaves, etc.
-    target_features: Dict with energy, valence, density
-
-Returns:
-    fitness_score: 0-1 score (higher is better)
+Calculates how well a chromosome matches the target musical features.
+Scores four components: palette, scale, warp strength, and octaves.
+Returns a single fitness score between 0 and 1.
 """
 
 FITNESS_WEIGHTS = {

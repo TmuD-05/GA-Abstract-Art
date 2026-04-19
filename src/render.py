@@ -1,14 +1,11 @@
 """
 renderer.py
 
-This module is responsible for converting a chromosome into a visual image.
-It uses the OpenCV library to create and manipulate images, and the OpenSimplex library to generate noise-based patterns.
-Uses the noise2 which is a 2D noise function that generates smooth, natural-looking patterns that can be used to create fluid-like distortions in the image.
+Converts a chromosome into an image using fractal noise and domain warping.
+Each pixel's colour is determined by layered noise values and the chromosomes parameters.
+The final image is saved as a PNG file.
 
-The output is a generated image that visually represents the parameters encoded in the chromosome,
-which are then saved to disk.
 """
-
 import numpy as np
 import cv2
 import os

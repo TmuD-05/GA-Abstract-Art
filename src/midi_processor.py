@@ -1,17 +1,17 @@
-from music21 import converter, tempo, chord, note, instrument
-from collections import defaultdict
+from music21 import converter, tempo
 import statistics
 
 """
-Extract 4D emotion features from MIDI with robustness improvements.
+midi_processor.py
 
-Features:
-- energy: Arousal from tempo (0–1)
-- valence: Positivity from mode + key brightness (0–1)
-- complexity: Busyness from note event density (0–1)
-- brightness: Attack/sharpness from normalized velocity (0–1)
+Parses a MIDI file and extracts three musical features:
+- Energy:  derived from tempo (BPM)
+- Valence: derived from average pitch
+- Density: derived from how many notes are played over time
 
+All three features are normalized to a 0-1 range.
 """
+
 def extract_emotion_features(file_path, use_average_tempo=True):
     try:
         score = converter.parse(file_path)
