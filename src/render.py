@@ -35,17 +35,12 @@ def make_fluid_image(width, height, chromosome):
     warp_strength = chromosome["warp_strength"]
     octaves = chromosome["octaves"]
     palette = PALETTES[chromosome["palette_id"]]
-    persistence = chromosome["persistence"] # might just be able to take out
+    persistence = chromosome["persistence"]
 
-    # if we want to keep these static for each gen, we would not be pulling from chromosome
     seed_x = chromosome["seed_x"]
     seed_y = chromosome["seed_y"]
 
-    print("Generating image...")
-
     for y in range(height):
-        if y % (height // 10) == 0:
-            print(f"Progress:{int(y/height*100)}% ")
 
         for x in range(width):
 
@@ -76,17 +71,15 @@ def make_fluid_image(width, height, chromosome):
     return canvas
 
 # image saving and showing
-
 def save_image(img, folder="outputs"):
     os.makedirs(folder, exist_ok=True)
     timestamp = datetime.now().strftime("%d_%H%M%S")
     filename = os.path.join(folder, f"fluid_{timestamp}.png")
-    #filename = os.path.join(folder, f"palette21.png") this was just used for testing the palette, ignore
     cv2.imwrite(filename, img)
     print(f"Image saved as {filename}")
     return filename
 
-def show_image(img, window_name="Fluid Image"): # we can find a diff name for the window
+def show_image(img, window_name="Fluid Image"):
     cv2.imshow(window_name, img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()

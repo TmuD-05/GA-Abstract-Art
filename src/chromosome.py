@@ -11,14 +11,14 @@ fitness function.
 import numpy as np
 
 def pick_palette(valence, energy):
-    if valence < 0.4: #made this 0.4 from 0.5 due to our valence calculation issues
-        start, end = 1, 10 # darker, moodier, cooler palettes
+    if valence < 0.4:
+        start, end = 1, 10
 
     else:
-        if energy < 0.7: #need to test smt like edm music and see what is scores for valence
-            start, end = 11, 19 # happy but not intense
+        if energy < 0.7:
+            start, end = 11, 19
         else:
-            start, end = 16, 25 # neon / intense
+            start, end = 16, 25
 
     return np.random.randint(start, end + 1)
 
@@ -31,9 +31,6 @@ def pick_scale(energy):
         return np.random.uniform(75, 100)
 
 
- # high density = high octaves, low density = low octaves
-# density 0.0 = 1-2 (simple, smooth)
-# density 1.0 = 5-6 (more complex, chaotic)
 def pick_octaves(density):
 
     start = max(1, round(density * 5))
@@ -44,8 +41,6 @@ def pick_octaves(density):
 
     return np.random.randint(start, end + 1)
 
-# high energy = more warp, more distortion
-# low energy = less warp, smoother, calmer
 def pick_warp_strength(energy):
     if energy < 0.3:
         return np.random.uniform(20, 35)
@@ -64,11 +59,9 @@ def build_chromosome(features: dict) -> dict:
         "palette_id": pick_palette(valence, energy),
         "scale": pick_scale(energy),
         "octaves": pick_octaves(density),
-        "persistence": np.random.uniform(0.3, 0.8), # we could possibly make this a calculation dependent on density
+        "persistence": np.random.uniform(0.3, 0.8),
         "warp_strength": pick_warp_strength(energy),
 
-        #these values we have to decide if we want to keep the same ones per generation or give each chromosome a diff one
-        #all the seed does is ensure we dont have the exact same 'flow pattern' each time, so each seed value has a different 'flow pattern'
         "seed_x": np.random.uniform(0, 1000),
         "seed_y": np.random.uniform(0, 10000),
 

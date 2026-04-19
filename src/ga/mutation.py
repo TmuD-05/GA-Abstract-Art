@@ -1,19 +1,30 @@
 import numpy as np
 
 MUTATION_RATE = {
-   "scale": 0.15,           # Important for composition
-   "warp_strength": 0.15,   # Important for flow
-   "palette_id": 0.1,       # Already selected well, mutate conservatively
-   "octaves": 0.2,          # Moderate importance
-   "persistence": 0.05,     # Low impact, rarely mutate
+   "scale": 0.15,
+   "warp_strength": 0.15,
+   "palette_id": 0.1,
+   "octaves": 0.2,
+   "persistence": 0.05,
 }
 
+"""
+    Randomly changes chromosome traits so the GA can explore new artistic styles. 
 
+    This function uses two different methods for mutation:
+    1. Small 'nudges' for decimal-based numbers (Scale, Warp, Persistence) to 
+       fine-tune the artistic details.
+    2. Fixed 'jumps' for whole numbers (Palette, Octaves) to try out 
+       different categories.
+
+    Finally, it uses clipping to make sure the values never go out of bounds, 
+    which prevents the image generator from crashing or producing errors.
+    """
 def mutation(chromosome):
     mutated = chromosome.copy()
 
     if np.random.random() < MUTATION_RATE["scale"]:
-        mutated["scale"] += np.random.uniform(-15, 15) # 15 might be too high for this
+        mutated["scale"] += np.random.uniform(-15, 15)
         mutated["scale"] = np.clip(mutated["scale"], 75, 200)
 
     if np.random.random() < MUTATION_RATE["warp_strength"]:

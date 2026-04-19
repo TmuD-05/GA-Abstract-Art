@@ -5,10 +5,6 @@
 
     """
 
-
-#  SAD PALETTES 1-5 (cool, deep, dark)
-# could be used for valence 0.0-0.3
-
 PALETTE_1 = [
     (80, 30, 10),
     (110, 40, 20),

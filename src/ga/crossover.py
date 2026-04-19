@@ -1,11 +1,21 @@
 import random
 
+"""
+    Creates a new 'child' chromosome by mixing the traits of two parent chromosomes.
+
+    This function uses two strategies to combine genetic information:
+    1. For smooth, decimal values (like Seed, Scale, and Warp), it uses 'Blended 
+       Crossover.' Instead of just picking one parent, it mixes them together 
+       at a random ratio to create a completely new value between the two.
+    2. For distinct categories (like Palette or Octaves), it uses 'Uniform 
+       Crossover.' It simply flips a coin to choose the exact value from 
+       either Parent A or Parent B.
+
+    This ensures that the child inherits the best of both parents while
+"""
 
 def crossover(parent1, parent2):
-   """
-   Combines two parent chromosomes to create a child chromosome.
-   Uses uniform crossover, where each gene is randomly selected from one of the parents.
-   """
+
    child = {}
    for gene in parent1:
        if gene in ["seed_x", "seed_y"]:

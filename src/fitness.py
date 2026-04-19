@@ -1,33 +1,27 @@
+"""
+Calculate fitness score based on how well chromosome matches target features.
+
+Args:
+    chromosome: Dict with palette_id, scale, warp_strength, octaves, etc.
+    target_features: Dict with energy, valence, density
+
+Returns:
+    fitness_score: 0-1 score (higher is better)
+"""
+
 FITNESS_WEIGHTS = {
-   'palette': 0.4,   # Changed from 0.35
-   'scale': 0.2,    # Changed from 0.25
-   'warp': 0.2,     # Changed from 0.25
-   'octave': 0.2    # Changed from 0.15
+    'palette': 0.4,
+    'scale': 0.2,
+    'warp': 0.2,
+    'octave': 0.2
 }
 
 
-
-def get_palette_range(valence, energy):
-    """Get palette range based on valence and energy (matches pick_palette logic)"""
-    if valence < 0.4:
-        return (1, 10)
-    else:
-        if energy < 0.7:
-            return (11, 19)
-        else:
-            return (16, 25)
-
-
-def get_ideal_palette(valence, energy):
-    """Calculate ideal palette ID based on valence and energy"""
-    low, high = get_palette_range(valence, energy)
-    mid = (low + high) / 2
-    return mid
-
-
 def calculate_fitness(chromosome, target_features):
-    # SCALE
+
     tgt_energy = target_features["energy"]
+    tgt_density = target_features["density"]
+
 
     scale_start = 200 - tgt_energy * 125
     scale_end = 300 + tgt_energy * 220
@@ -38,25 +32,35 @@ def calculate_fitness(chromosome, target_features):
 
     scale_score = max(0, 1 - dev_s / max_error_s)
 
-    # PALETTE (now uses both valence and energy)
-    tgt_valence = target_features['valence']
-    ideal_p = get_ideal_palette(tgt_valence, tgt_energy)
-    low_p, high_p = get_palette_range(tgt_valence, tgt_energy)
+    valence = round(target_features['valence'], 1)
+    energy = round(target_features['energy'], 1)
 
+    if valence < 0.4:
+        start = int(1 + valence * 20)
+        end = int(4 + valence * 20)
+    else:
+        t = (valence - 0.4) / 0.6
+        if energy < 0.7:
+            start = int(11 + t * 5)
+            end = int(14 + t * 5)
+        else:
+            start = int(16 + t * 6)
+            end = int(19 + t * 6)
+
+    ideal_p = (start + end) / 2
     dev_p = abs(ideal_p - chromosome["palette_id"])
-    max_error_p = max(abs(ideal_p - low_p), abs(ideal_p - high_p))
+    max_error_p = max(abs(ideal_p - start), abs(ideal_p - end))
 
     palette_score = max(0, 1 - dev_p / max_error_p)
 
-    # OCTAVE
-    tgt_density = target_features['density']
+
     ideal_o = 1 + (tgt_density * 5)
     dev_o = abs(ideal_o - chromosome["octaves"])
     max_error_o = max(abs(ideal_o - 1), abs(ideal_o - 6))
 
     octave_score = max(0, 1 - dev_o / max_error_o)
 
-    # WARP
+
     warp_start = 20 + tgt_energy * 130
     warp_end = 50 + tgt_energy * 130
 
@@ -66,7 +70,6 @@ def calculate_fitness(chromosome, target_features):
 
     warp_score = max(0, 1 - dev_w / max_error_w)
 
-    # COMBINED FITNESS
     fitness_score = (
             palette_score * FITNESS_WEIGHTS['palette'] +
             scale_score * FITNESS_WEIGHTS['scale'] +

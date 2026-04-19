@@ -31,18 +31,6 @@ def extract_emotion_features(file_path, use_average_tempo=True):
     energy = (bpm - 40) / (220 - 40)
     energy = max(0.0, min(energy, 1.0))
 
-    print("\n--- NOTE OFFSETS (first 30) ---")
-    print([n.offset for n in all_notes[:30]])
-
-    offsets = [n.offset for n in all_notes]
-    unique_offsets = set(offsets)
-
-    print("\n--- UNIQUE OFFSETS ---")
-    print(list(unique_offsets)[:30])
-
-    print("\nTotal notes:", len(offsets))
-    print("Unique onsets:", len(unique_offsets))
-
     features = {
         'energy': round(energy, 3),
         'valence': round(valence, 3),
@@ -60,12 +48,12 @@ def get_valence(all_notes):
         valence = 0.5
 
     pitches = [n.pitch.ps for n in all_notes if hasattr(n, 'pitch')]
-    print(" this is the sum of pitches", sum(pitches))
+
 
     avg_pitch = sum(pitches) / len(pitches)
-    print("avg_pitch", avg_pitch)
+
     valence = (avg_pitch - 40) / (80 - 40)
-    print("valence", valence)
+
     valence = max(0.0, min(valence, 1.0))
 
     return valence
