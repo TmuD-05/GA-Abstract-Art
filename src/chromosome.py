@@ -30,7 +30,6 @@ def pick_scale(energy):
     else:
         return np.random.uniform(75, 100)
 
-
 def pick_octaves(density):
 
     start = max(1, round(density * 5))
@@ -61,7 +60,6 @@ def build_chromosome(features: dict) -> dict:
         "octaves": pick_octaves(density),
         "persistence": np.random.uniform(0.3, 0.8),
         "warp_strength": pick_warp_strength(energy),
-
         "seed_x": np.random.uniform(0, 1000),
         "seed_y": np.random.uniform(0, 10000),
 

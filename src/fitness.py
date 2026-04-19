@@ -22,19 +22,21 @@ def calculate_fitness(chromosome, target_features):
     tgt_energy = target_features["energy"]
     tgt_density = target_features["density"]
 
-
-    scale_start = 200 - tgt_energy * 125
-    scale_end = 300 + tgt_energy * 220
-
-    ideal_s = (scale_start + scale_end) / 2
-    dev_s = abs(ideal_s - chromosome["scale"])
-    max_error_s = max(abs(ideal_s - scale_start), abs(ideal_s - scale_end))
-
-    scale_score = max(0, 1 - dev_s / max_error_s)
-
     valence = round(target_features['valence'], 1)
     energy = round(target_features['energy'], 1)
 
+    if energy < 0.3:
+        start, end = 170, 200
+    elif energy < 0.7:
+        start, end = 120, 150
+    else:
+        start, end = 75, 100
+
+    ideal_s = (start + end) / 2
+    dev_s = abs(ideal_s - chromosome["scale"])
+    max_error_s = max(abs(ideal_s - start), abs(ideal_s - end))
+
+    scale_score = max(0, 1 - dev_s / max_error_s)
     if valence < 0.4:
         start = int(1 + valence * 20)
         end = int(4 + valence * 20)
