@@ -71,12 +71,6 @@ def ga_main(target_features, pop_size=20, generations=50):
             child = mutation(child)
             new_population.append(child)
 
-
-        if random.random() < 0.1 and len(new_population) > 1:
-            replace_index = random.randint(1, len(new_population) - 1)
-            new_population[replace_index] = build_chromosome(target_features)
-
-
         new_best = find_best(new_population, target_features)
         if calculate_fitness(new_best, target_features) > calculate_fitness(best_ever, target_features):
             best_ever = new_best
