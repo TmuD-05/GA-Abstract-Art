@@ -47,7 +47,11 @@ def get_valence(all_notes):
     if not all_notes:
         valence = 0.5
 
-    pitches = [n.pitch.ps for n in all_notes if hasattr(n, 'pitch')]
+    pitches = []
+    for n in all_notes:
+        if hasattr(n, 'pitch'):
+            pitch_value = n.pitch.ps
+            pitches.append(pitch_value)
 
 
     avg_pitch = sum(pitches) / len(pitches)

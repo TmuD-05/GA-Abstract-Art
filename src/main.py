@@ -24,10 +24,10 @@ from src.fitness import calculate_fitness
    """
 def main():
 
-    MIDI_PATH = "/Users/tafadzwa/Genetic Algorithm For Abstract Art/test/Pirates of the Caribbean - He's a Pirate (1).mid"
+    MIDI_PATH = "/Users/tafadzwa/Genetic Algorithm For Abstract Art/test/Dr Dre - Still Dre.mid"
     OUTPUT_DIR = "/Users/tafadzwa/Genetic Algorithm For Abstract Art/outputs/final"
     POP_SIZE = 50
-    GENERATIONS = 10000
+    GENERATIONS = 100
 
     print("=" * 70)
     print("GENETIC ALGORITHM FOR ABSTRACT ART")
@@ -37,10 +37,10 @@ def main():
     print(f"\n[1/4] Extracting emotional features from MIDI...")
     try:
         target_features = extract_emotion_features(MIDI_PATH)
-        print(f"   Features extracted:")
-        print(f"    - Energy:  {target_features['energy']:.3f}")
-        print(f"    - Valence: {target_features['valence']:.3f}")
-        print(f"    - Density: {target_features['density']:.3f}")
+        print(f" Features extracted:")
+        print(f"  - Energy:  {target_features['energy']:.3f}")
+        print(f"  - Valence: {target_features['valence']:.3f}")
+        print(f"  - Density: {target_features['density']:.3f}")
     except Exception as e:
         print(f"   Error extracting features: {e}")
         return
@@ -51,20 +51,20 @@ def main():
     try:
         best_chromosome = ga_main(target_features, pop_size=POP_SIZE, generations=GENERATIONS)
         best_fitness = calculate_fitness(best_chromosome, target_features)
-        print(f"   GA completed")
-        print(f"    - Best fitness: {best_fitness:.4f}")
-        print(f"    - Best palette: {best_chromosome['palette_id']}")
-        print(f"    - Best scale: {best_chromosome['scale']:.2f}")
+        print(f" GA completed")
+        print(f"  - Best fitness: {best_fitness:.4f}")
+        print(f"  - Best palette: {best_chromosome['palette_id']}")
+        print(f"  - Best scale: {best_chromosome['scale']:.2f}")
     except Exception as e:
-        print(f"   Error running GA: {e}")
+        print(f" Error running GA: {e}")
         return
 
     print(f"\n[3/4] Rendering final image (512x512)...")
     try:
         final_img = make_fluid_image(512, 512, best_chromosome)
-        print(f"  ✓ Image rendered successfully")
+        print(f" Image rendered successfully")
     except Exception as e:
-        print(f"  ✗ Error rendering image: {e}")
+        print(f" Error rendering image: {e}")
         return
 
 
@@ -73,7 +73,7 @@ def main():
         os.makedirs(OUTPUT_DIR, exist_ok=True)
         filename = save_image(final_img, folder=OUTPUT_DIR)
     except Exception as e:
-        print(f"   Error saving image: {e}")
+        print(f" Error saving image: {e}")
         return
 
     print(f"\n{'=' * 70}")

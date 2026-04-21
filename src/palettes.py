@@ -176,7 +176,7 @@ PALETTE_19 = [ # teal to yellow
 ]
 
 
-# NEON / INTENSE PALETTES 16-21 (for high energy songs, more warp, more distortion, more intense colours)
+# NEON / INTENSE PALETTES 20-25 (for high energy songs, more warp, more distortion, more intense colours)
 PALETTE_20 = [  # neon sky blue to cyan
     (255, 80, 0),
     (255, 120, 20),
@@ -194,6 +194,7 @@ PALETTE_21 = [  #lime to slight yellow pop
 ]
 
 PALETTE_22 = [  # hot pink to magenta
+
     (180, 60, 255),
     (200, 90, 255),
     (220, 120, 255),
