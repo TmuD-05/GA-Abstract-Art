@@ -5,7 +5,6 @@ Runs the genetic algorithm to evolve the best chromosome over many generations.
 Each generation uses tournament selection, crossover, and mutation to improve the population.
 Elitism keeps the best chromosome from each generation.
 """
-
 from src.chromosome import build_chromosome
 import random
 from src.fitness import calculate_fitness
