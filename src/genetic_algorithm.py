@@ -51,7 +51,6 @@ def ga_main(target_features, pop_size=20, generations=50):
         best = find_best(population, target_features)
         new_population.append(best)
 
-
         while len(new_population) < pop_size:
             p1 = tournament_selection(population, target_features, TOURNAMENT_K)
             p2 = tournament_selection(population, target_features, TOURNAMENT_K)
