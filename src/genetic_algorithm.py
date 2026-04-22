@@ -13,7 +13,6 @@ from src.ga.mutation import mutation
 
 TOURNAMENT_K = 3
 
-
 def create_population(n, features):
 
     population = []
