@@ -37,17 +37,7 @@ def tournament_selection(population, target_features, k=TOURNAMENT_K):
 def find_best(population, target_features):
 
     return max(population, key=lambda ind: calculate_fitness(ind, target_features))
-    """
-    Main genetic algorithm loop
 
-    Args:
-        target_features: Dict with energy, valence, density
-        pop_size: Population size (default 20)
-        generations: Number of generations (default 50)
-
-    Returns:
-        best_ever: Best chromosome found
-    """
 
 def ga_main(target_features, pop_size=20, generations=50):
 
