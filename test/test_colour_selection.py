@@ -15,8 +15,8 @@ from datetime import datetime
 POP_SIZE = 10
 
 features = {
-    "energy": 0.9,
-    "valence": 0.8,
+    "energy": 0.6,
+    "valence": 0.5,
     "density": 1
 }
 

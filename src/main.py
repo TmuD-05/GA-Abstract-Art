@@ -24,7 +24,7 @@ from src.fitness import calculate_fitness
    """
 def main():
 
-    MIDI_PATH = "/Users/tafadzwa/Genetic Algorithm For Abstract Art/test/Dr Dre - Still Dre.mid"
+    MIDI_PATH = "/Users/tafadzwa/Genetic Algorithm For Abstract Art/test/EDM/Skrillex - Scary Monsters and nice splities (all parts).mid"
     OUTPUT_DIR = "/Users/tafadzwa/Genetic Algorithm For Abstract Art/outputs/final"
     POP_SIZE = 50
     GENERATIONS = 100
