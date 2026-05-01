@@ -30,28 +30,13 @@ def tournament_selection(population, target_features, k=TOURNAMENT_K):
         index = random.randint(0, len(population) - 1)
         group.append(population[index])
 
-    best = group[0]
-    best_fitness = calculate_fitness(best, target_features)
-
-    for ind in group[1:]:
-        fitness = calculate_fitness(ind, target_features)
-
-        if fitness > best_fitness:
-            best = ind
-            best_fitness = fitness
+    best = max(group, key=lambda ind: calculate_fitness(ind, target_features))
     return best
 
-def select_parent(population, target_features):
-    if random.random() < 0.3:
-        return random.choice(population)
-    else:
-        return tournament_selection(population, target_features, k=2)
 
 def find_best(population, target_features):
-    def fitness_func(ind):
-        return calculate_fitness(ind, target_features)
 
-    return max(population, key=fitness_func)
+    return max(population, key=lambda ind: calculate_fitness(ind, target_features))
     """
     Main genetic algorithm loop
 
@@ -80,8 +65,8 @@ def ga_main(target_features, pop_size=20, generations=50):
 
 
         while len(new_population) < pop_size:
-            p1 = select_parent(population, target_features)
-            p2 = select_parent(population, target_features)
+            p1 = tournament_selection(population, target_features, TOURNAMENT_K)
+            p2 = tournament_selection(population, target_features, TOURNAMENT_K)
             child = crossover(p1, p2)
             child = mutation(child)
             new_population.append(child)
