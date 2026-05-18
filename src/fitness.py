@@ -12,8 +12,6 @@ FITNESS_WEIGHTS = {
     'warp': 0.2,
     'octave': 0.2
 }
-
-
 def calculate_fitness(chromosome, target_features):
 
     tgt_energy = target_features["energy"]
