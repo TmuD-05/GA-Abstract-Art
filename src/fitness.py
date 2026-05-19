@@ -19,7 +19,6 @@ def calculate_fitness(chromosome, target_features):
 
     valence = round(target_features['valence'], 1)
     energy = round(target_features['energy'], 1)
-
     if energy < 0.3:
         start, end = 170, 200
     elif energy < 0.7:
