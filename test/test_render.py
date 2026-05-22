@@ -21,7 +21,6 @@ def test_renderer_with_midi():
 
     print("\n--- Building chromosome ---")
     chromosome = build_chromosome(features)
-
     print("\n--- Chromosome ---")
     for k, v in chromosome.items():
         print(f"{k}: {v}")
