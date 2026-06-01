@@ -27,7 +27,6 @@ def test_renderer_with_midi():
 
     print("\n--- Generating image ---")
     img = make_fluid_image(300, 300, chromosome)
-
     assert img is not None
     assert img.shape == (300, 300, 3)
 
