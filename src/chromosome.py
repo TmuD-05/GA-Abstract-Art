@@ -6,9 +6,7 @@ Each chromosome holds the visual parameters used to render an image, such as col
 warp strength, and noise settings.
 Initial values are chosen based on the musical features extracted from the MIDI.
 """
-
 import numpy as np
-
 def pick_palette(valence, energy):
     if valence < 0.4:
         start, end = 1, 10
