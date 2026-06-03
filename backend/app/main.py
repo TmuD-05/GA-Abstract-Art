@@ -9,11 +9,13 @@ import sys
 import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-from src.midi_processor import extract_emotion_features
-from src.genetic_algorithm import ga_main
-from src.render import make_fluid_image, save_image
-from src.fitness import calculate_fitness
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from backend.src.midi_processor import extract_emotion_features
+from backend.src.genetic_algorithm import ga_main
+from backend.src.render import make_fluid_image, save_image
+from backend.src.fitness import calculate_fitness
 
 """
    Main workflow:
@@ -22,6 +24,18 @@ from src.fitness import calculate_fitness
    3. Render final image
    4. Save output
    """
+app = FastAPI(title="Genetic Algorithm Art Engine API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows your React frontend to communicate with this server
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.mount("/static", StaticFiles(directory="backend/app/static"), name="static")
+
 def main():
 
     MIDI_PATH = "/Users/tafadzwa/Genetic Algorithm For Abstract Art/test/EDM/Skrillex - Scary Monsters and nice splities (all parts).mid"
@@ -92,4 +106,7 @@ def main():
 
 
 if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run("backend.app.main:app", host="127.0.0.1", port=8080, reload=True)
     main()
