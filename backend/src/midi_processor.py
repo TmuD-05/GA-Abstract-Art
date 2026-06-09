@@ -1,6 +1,6 @@
 import requests
 import base64
-
+BASE_URL = "https://customer.api.soundcharts.com"
 def get_spotify_access_token(client_id:str, client_secret:str):
     url = "https://accounts.spotify.com/api/token"
 
@@ -34,10 +34,12 @@ def search_spotify_track (track_name:str,access_token:str):
     else:
         print(f"--- SPOTIFY REJECTION DETAILS: Status {response.status_code} | Body: {response.text}")
         raise Exception("Failed to get track list")
-def get_audio_features(track_id:str,access_token:str):
-    url = f"https://api.spotify.com/v1/audio-features/{track_id}"
+def get_audio_features(track_id:str,access_id:str,access_token:str):
+    url = f"{BASE_URL}/api/v2.25/song/by-platform/spotify/{track_id}"
     headers = {
-        "Authorization": f"Bearer {access_token}"
+        "x-app-id": access_id,
+        "x-api-key": access_token,
+        "Accept": "application/json"
     }
     response = requests.get(url,headers=headers)
     print(f"--- MOCK AUDIO FEATURES DEBUG: Status {response.status_code} | Body: {response.text}")
