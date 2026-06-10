@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 import os
 from backend.src.midi_processor import get_spotify_access_token, search_spotify_track, get_audio_features
 
@@ -11,18 +11,39 @@ SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
 SOUND_CHART_ID = os.getenv("SOUND_CHART_ID")
 SOUND_CHART_SECRET = os.getenv("SOUND_CHART_TOKEN")
 
-@router.get("/api/spotify/track-features")
-def get_track_audio_features(track_title: str):
-    # 1. Grab a fresh valid token
-    print(f"DEBUG ID: {SPOTIFY_CLIENT_ID}")
-    print(f"DEBUG SECRET: {SPOTIFY_CLIENT_SECRET}")
-    token = get_spotify_access_token(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET)
+@router.get("/spotify/search")
+def search_song(track_title:str):
 
-    # 2. Query Spotify's metadata
+    token = get_spotify_access_token(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET)
     search_results = search_spotify_track(track_title, token)
-    id = search_results["tracks"]["items"][0]["id"]
-    print(f"DEBUG ID: {id}")
-    track_data = get_audio_features(id, SOUND_CHART_ID, SOUND_CHART_SECRET)
-    audio_features = track_data.get("object", {}).get("audio",{})
-    # (Extract target features like tempo, valence, or energy to pass to your Genetic Algorithm!)
-    return {"audio_features": audio_features}
+    items = search_results.get("tracks", {}).get("items", [])
+
+    if not items:
+        return {"results": []}
+
+    formatted_results = []
+
+    for item in items:
+        artists_list = item.get("artists") or []
+        artist_name = artists_list[0].get("name", "Unknown Artist") if artists_list else "Unknown Artist"
+        formatted_results.append({
+            "id": item.get("id"),
+            "title": item.get("name"),
+            "artist": artist_name,
+            "preview_url": item.get("preview_url"),
+            "album_art": item.get("album", {}).get("images", [{}])[-1].get("url") if item.get("album", {}).get(
+                "images") else None
+        })
+    return {"results": formatted_results}
+
+@router.get("/soundchart/features/{track_id}")
+def get_track_audio_features(track_id: str):
+    try:
+
+        track_data = get_audio_features(track_id, SOUND_CHART_ID, SOUND_CHART_SECRET)
+        audio_features = track_data.get("object", {}).get("audio", {})
+        return {"audio_features": audio_features}
+
+    except Exception as e:
+
+        raise HTTPException(status_code=400, detail=str(e))

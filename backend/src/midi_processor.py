@@ -24,7 +24,7 @@ def get_spotify_access_token(client_id:str, client_secret:str):
         raise Exception("Failed to get access token")
 
 def search_spotify_track (track_name:str,access_token:str):
-    url = f"https://api.spotify.com/v1/search?q={track_name}&type=track&limit=1"
+    url = f"https://api.spotify.com/v1/search?q={track_name}&type=track&limit=5"
     headers = {
         "Authorization": f"Bearer {access_token}"
     }
@@ -46,4 +46,4 @@ def get_audio_features(track_id:str,access_id:str,access_token:str):
     if response.status_code == 200:
         return response.json()
     else:
-        return "Failed to get audio features"
+        raise Exception(f"Soundcharts API error: Status {response.status_code}")
