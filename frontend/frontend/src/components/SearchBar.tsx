@@ -12,7 +12,6 @@ interface Track {
 interface Props {
   onSelect: (spotifyId: string) => void;
 }
-
 export default function SearchBar({ onSelect }: Props) {
   const [searchResults, setSearchResults] = useState<Track[]>([]);
 
