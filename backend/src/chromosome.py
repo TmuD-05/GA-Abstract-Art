@@ -1,6 +1,5 @@
 """
 chromosome.py
-
 Defines the chromosome structure used in the genetic algorithm.
 Each chromosome holds the visual parameters used to render an image, such as colour palette, scale, 
 warp strength, and noise settings.
