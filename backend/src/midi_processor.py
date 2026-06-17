@@ -34,16 +34,21 @@ def search_spotify_track (track_name:str,access_token:str):
     else:
         print(f"--- SPOTIFY REJECTION DETAILS: Status {response.status_code} | Body: {response.text}")
         raise Exception("Failed to get track list")
-def get_audio_features(track_id:str,access_id:str,access_token:str):
+def get_audio_features(track_id: str, access_id: str, access_token: str):
+    print(f"--- TRACK ID RECEIVED: '{track_id}'")
     url = f"{BASE_URL}/api/v2.25/song/by-platform/spotify/{track_id}"
     headers = {
         "x-app-id": access_id,
         "x-api-key": access_token,
         "Accept": "application/json"
     }
-    response = requests.get(url,headers=headers)
-    print(f"--- MOCK AUDIO FEATURES DEBUG: Status {response.status_code} | Body: {response.text}")
+    response = requests.get(url, headers=headers)
+    print(f"--- SOUNDCHARTS DEBUG: Status {response.status_code} | Body: {response.text}")
+
     if response.status_code == 200:
-        return response.json()
+        audio = response.json().get("object", {}).get("audio")
+        if audio is None:
+            raise Exception("Audio features not available for this track")
+        return {"audio_features":audio}
     else:
         raise Exception(f"Soundcharts API error: Status {response.status_code}")
