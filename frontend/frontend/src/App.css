@@ -1,184 +1,659 @@
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
+/* ── Tokens ──────────────────────────────────────────── */
+:root {
+  /* Win98 chrome */
+  --w98-desktop:   #008080;
+  --w98-silver:    #c0c0c0;
+  --w98-dark:      #808080;
+  --w98-darker:    #404040;
+  --w98-white:     #ffffff;
+  --w98-navy:      #000080;
+  --w98-navy-end:  #1084d0;
+  --w98-text:      #000000;
+  --w98-disabled:  #808080;
 
-  &:hover {
-    border-color: var(--accent-border);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
+  /* Gallery interior */
+  --gallery-wall:  #0e0e0e;
+  --gallery-panel: #141414;
+
+  /* Placard */
+  --gold:          #c9a84c;
+  --gold-dim:      rgba(201,168,76,0.2);
+  --parchment:     #f0ece0;
+  --parchment-dim: #a89f8c;
+  --green:         #06d6a0;
 }
 
-.hero {
-  position: relative;
+/* ── Reset ───────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  .base,
-  .framework,
-  .vite {
-    inset-inline: 0;
-    margin: 0 auto;
-  }
+/* ── Desktop ─────────────────────────────────────────── */
+.win98-desktop {
+  width: 100vw;
+  height: 100vh;
+  background: var(--w98-desktop);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Arial', sans-serif;
+  font-size: 11px;
 
-  .base {
-    width: 170px;
-    position: relative;
-    z-index: 0;
-  }
-
-  .framework,
-  .vite {
-    position: absolute;
-  }
-
-  .framework {
-    z-index: 1;
-    top: 34px;
-    height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
-      scale(1.4);
-  }
-
-  .vite {
-    z-index: 0;
-    top: 107px;
-    height: 26px;
-    width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
-      scale(0.8);
-  }
+  /* Subtle scanline texture on desktop */
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  ), radial-gradient(ellipse at center, #009090 0%, #006060 100%);
 }
 
-#center {
+/* ── Win98 Window ────────────────────────────────────── */
+.win98-window {
+  width: 960px;
+  height: 620px;
   display: flex;
   flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
 
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
+  /* Classic raised bevel */
+  border-top:    2px solid var(--w98-white);
+  border-left:   2px solid var(--w98-white);
+  border-right:  2px solid var(--w98-darker);
+  border-bottom: 2px solid var(--w98-darker);
+  box-shadow:
+    1px 1px 0 var(--w98-silver) inset,
+    -1px -1px 0 var(--w98-dark) inset;
+  background: var(--w98-silver);
 }
 
-#next-steps {
+/* ── Title Bar ───────────────────────────────────────── */
+.win98-titlebar {
   display: flex;
-  border-top: 1px solid var(--border);
-  text-align: left;
-
-  & > div {
-    flex: 1 1 0;
-    padding: 32px;
-    @media (max-width: 1024px) {
-      padding: 24px 20px;
-    }
-  }
-
-  .icon {
-    margin-bottom: 16px;
-    width: 22px;
-    height: 22px;
-  }
-
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    text-align: center;
-  }
+  align-items: center;
+  padding: 3px 4px;
+  background: linear-gradient(90deg, var(--w98-navy) 0%, var(--w98-navy-end) 100%);
+  gap: 4px;
+  flex-shrink: 0;
+  user-select: none;
 }
 
-#docs {
-  border-right: 1px solid var(--border);
-
-  @media (max-width: 1024px) {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
-}
-
-#next-steps ul {
-  list-style: none;
-  padding: 0;
+.win98-titlebar-icon {
+  width: 16px;
+  height: 16px;
   display: flex;
-  gap: 8px;
-  margin: 32px 0 0;
-
-  .logo {
-    height: 18px;
-  }
-
-  a {
-    color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    background: var(--social-bg);
-    display: flex;
-    padding: 6px 12px;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    transition: box-shadow 0.3s;
-
-    &:hover {
-      box-shadow: var(--shadow);
-    }
-    .button-icon {
-      height: 18px;
-      width: 18px;
-    }
-  }
-
-  @media (max-width: 1024px) {
-    margin-top: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-
-    li {
-      flex: 1 1 calc(50% - 8px);
-    }
-
-    a {
-      width: 100%;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-  }
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-#spacer {
-  height: 88px;
-  border-top: 1px solid var(--border);
-  @media (max-width: 1024px) {
-    height: 48px;
-  }
+.win98-titlebar-text {
+  flex: 1;
+  color: var(--w98-white);
+  font-size: 11px;
+  font-weight: bold;
+  font-family: 'Arial', sans-serif;
 }
 
-.ticks {
+.win98-titlebar-buttons {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+/* Win98 title bar buttons */
+.win98-btn-chrome {
+  width: 16px;
+  height: 14px;
+  background: var(--w98-silver);
+  border-top:    1px solid var(--w98-white);
+  border-left:   1px solid var(--w98-white);
+  border-right:  1px solid var(--w98-darker);
+  border-bottom: 1px solid var(--w98-darker);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 9px;
+  font-weight: bold;
+  color: var(--w98-text);
+  font-family: 'Arial', sans-serif;
+}
+
+.win98-btn-chrome:active {
+  border-top:    1px solid var(--w98-darker);
+  border-left:   1px solid var(--w98-darker);
+  border-right:  1px solid var(--w98-white);
+  border-bottom: 1px solid var(--w98-white);
+}
+
+/* ── Menu Bar ────────────────────────────────────────── */
+.win98-menubar {
+  display: flex;
+  align-items: center;
+  padding: 2px 4px;
+  gap: 0;
+  border-bottom: 1px solid var(--w98-dark);
+  flex-shrink: 0;
+  background: var(--w98-silver);
+}
+
+.win98-menu-item {
+  padding: 2px 8px;
+  font-size: 11px;
+  color: var(--w98-text);
+  cursor: pointer;
+  font-family: 'Arial', sans-serif;
+}
+
+.win98-menu-item:hover {
+  background: var(--w98-navy);
+  color: var(--w98-white);
+}
+
+/* ── App Body ────────────────────────────────────────── */
+.win98-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+
+  /* Sunken inset border around body */
+  border-top:    2px solid var(--w98-dark);
+  border-left:   2px solid var(--w98-dark);
+  border-right:  2px solid var(--w98-white);
+  border-bottom: 2px solid var(--w98-white);
+  margin: 4px;
+}
+
+/* ── Left Panel ──────────────────────────────────────── */
+.panel-left {
+  width: 280px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: var(--w98-silver);
+  border-right: 2px solid var(--w98-dark);
+  overflow-y: auto;
+}
+
+.panel-section {
+  padding: 10px;
+  border-bottom: 1px solid var(--w98-dark);
+}
+
+/* Win98 groupbox */
+.win98-groupbox {
+  border-top:    1px solid var(--w98-dark);
+  border-left:   1px solid var(--w98-dark);
+  border-right:  1px solid var(--w98-white);
+  border-bottom: 1px solid var(--w98-white);
+  padding: 8px;
+  margin: 8px 0 0;
   position: relative;
+}
+
+.win98-groupbox-label {
+  position: absolute;
+  top: -8px;
+  left: 8px;
+  background: var(--w98-silver);
+  padding: 0 4px;
+  font-size: 11px;
+  color: var(--w98-text);
+  font-family: 'Arial', sans-serif;
+}
+
+/* ── Win98 Sunken Input ──────────────────────────────── */
+.win98-input-wrap {
+  display: flex;
+  align-items: center;
+  background: var(--w98-white);
+  border-top:    2px solid var(--w98-dark);
+  border-left:   2px solid var(--w98-dark);
+  border-right:  2px solid var(--w98-white);
+  border-bottom: 2px solid var(--w98-white);
+  box-shadow: inset 1px 1px 0 var(--w98-darker);
+}
+
+.win98-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 3px 5px;
+  font-size: 11px;
+  font-family: 'Arial', sans-serif;
+  color: var(--w98-text);
+}
+
+/* ── Win98 Push Button ───────────────────────────────── */
+.win98-push-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: var(--w98-silver);
+  border-top:    2px solid var(--w98-white);
+  border-left:   2px solid var(--w98-white);
+  border-right:  2px solid var(--w98-darker);
+  border-bottom: 2px solid var(--w98-darker);
+  box-shadow: 1px 1px 0 var(--w98-dark) inset, -1px -1px 0 var(--w98-silver) inset;
+  font-size: 11px;
+  font-family: 'Arial', sans-serif;
+  cursor: pointer;
+  color: var(--w98-text);
+  white-space: nowrap;
   width: 100%;
+}
 
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: -4.5px;
-    border: 5px solid transparent;
-  }
+.win98-push-btn:hover:not(:disabled) {
+  background: #d0d0d0;
+}
 
-  &::before {
-    left: 0;
-    border-left-color: var(--border);
-  }
-  &::after {
-    right: 0;
-    border-right-color: var(--border);
-  }
+.win98-push-btn:active:not(:disabled) {
+  border-top:    2px solid var(--w98-darker);
+  border-left:   2px solid var(--w98-darker);
+  border-right:  2px solid var(--w98-white);
+  border-bottom: 2px solid var(--w98-white);
+  box-shadow: -1px -1px 0 var(--w98-dark) inset;
+  padding: 5px 11px 3px 13px;
+}
+
+.win98-push-btn:disabled {
+  color: var(--w98-disabled);
+  cursor: not-allowed;
+}
+
+/* ── Track Info in panel ─────────────────────────────── */
+.track-album-thumb {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+  border-top:    2px solid var(--w98-dark);
+  border-left:   2px solid var(--w98-dark);
+  border-right:  2px solid var(--w98-white);
+  border-bottom: 2px solid var(--w98-white);
+}
+
+.track-album-empty {
+  width: 100%;
+  aspect-ratio: 1;
+  background: var(--w98-white);
+  border-top:    2px solid var(--w98-dark);
+  border-left:   2px solid var(--w98-dark);
+  border-right:  2px solid var(--w98-white);
+  border-bottom: 2px solid var(--w98-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--w98-disabled);
+  font-size: 11px;
+}
+
+.track-title-text {
+  font-size: 11px;
+  font-weight: bold;
+  color: var(--w98-text);
+  margin-top: 6px;
+  font-family: 'Arial', sans-serif;
+  line-height: 1.4;
+}
+
+.track-artist-text {
+  font-size: 11px;
+  color: var(--w98-disabled);
+  font-family: 'Arial', sans-serif;
+  margin-top: 2px;
+}
+
+.empty-state-text {
+  font-size: 11px;
+  color: var(--w98-disabled);
+  text-align: center;
+  padding: 20px 10px;
+}
+
+.error-msg {
+  font-size: 10px;
+  color: #cc0000;
+  margin-top: 6px;
+  font-family: 'Arial', sans-serif;
+}
+
+/* ── Spinner ─────────────────────────────────────────── */
+.spinner {
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--w98-dark);
+  border-top-color: var(--w98-navy);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Right Panel: Gallery Wall ───────────────────────── */
+.panel-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background: var(--gallery-wall);
+}
+
+/* Spotlight cast from above */
+.panel-right::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center,
+    rgba(255,255,240,0.07) 0%,
+    rgba(255,255,220,0.03) 35%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Ornate Frame ────────────────────────────────────── */
+.gallery-scene {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  animation: fadeUp 0.5s ease;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* The ornate frame: layered gradients simulate carved wood/gold bevel */
+.ornate-frame {
+  position: relative;
+  padding: 20px;
+
+  background:
+    /* Innermost dark shadow edge */
+    linear-gradient(135deg, #1a1100 0%, #3d2800 50%, #1a1100 100%);
+
+  /* Layered box-shadows simulate carved depth */
+  box-shadow:
+    /* outermost dark shadow (frame casts on wall) */
+    0 40px 80px rgba(0,0,0,0.95),
+    0 20px 40px rgba(0,0,0,0.8),
+    /* outer bevel highlight */
+    inset 0 0 0 2px #f0d060,
+    /* outer bevel shadow */
+    inset 0 0 0 4px #7a5000,
+    /* carved channel */
+    inset 0 0 0 7px #2a1800,
+    /* inner bevel highlight */
+    inset 0 0 0 9px #e8c040,
+    /* inner bevel shadow */
+    inset 0 0 0 12px #5a3800,
+    /* innermost shadow before image */
+    inset 0 0 0 14px #1a0e00;
+
+  border: 3px solid #7a5000;
+  border-radius: 2px;
+}
+
+/* Gradient overlay on frame face to simulate curved carved surface */
+.ornate-frame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 2px;
+  background:
+    linear-gradient(135deg,
+      rgba(255,220,80,0.25) 0%,
+      rgba(255,200,40,0.05) 25%,
+      rgba(80,50,0,0.2) 50%,
+      rgba(255,200,40,0.1) 75%,
+      rgba(255,220,80,0.2) 100%
+    );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Corner accent marks */
+.ornate-frame::after {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(255,200,60,0.3);
+  border-radius: 1px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.gallery-artwork {
+  display: block;
+  width: 360px;
+  height: 360px;
+  object-fit: cover;
+  position: relative;
+  z-index: 1;
+}
+
+/* Drop shadow on wall below frame */
+.gallery-scene::after {
+  content: '';
+  position: absolute;
+  bottom: 48px;
+  left: 15%;
+  right: 15%;
+  height: 30px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.7) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Wall placard beneath frame */
+.gallery-placard {
+  background: #1c1a12;
+  border: 1px solid #2e2a18;
+  padding: 8px 20px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  min-width: 200px;
+
+  /* Sunken placard bevel */
+  box-shadow:
+    inset 1px 1px 0 rgba(0,0,0,0.5),
+    inset -1px -1px 0 rgba(255,220,80,0.1);
+}
+
+.gallery-placard-title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 13px;
+  color: var(--parchment);
+  font-weight: normal;
+  letter-spacing: 0.3px;
+  margin-bottom: 2px;
+}
+
+.gallery-placard-sub {
+  font-size: 10px;
+  color: var(--parchment-dim);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-family: 'Arial', sans-serif;
+}
+
+/* ── Empty Frame Placeholder ─────────────────────────── */
+.gallery-empty-scene {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Empty ornate frame (same frame, no art inside) */
+.ornate-frame-empty {
+  position: relative;
+  padding: 20px;
+  width: 400px;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(135deg, #1a1100 0%, #3d2800 50%, #1a1100 100%);
+  box-shadow:
+    0 40px 80px rgba(0,0,0,0.95),
+    0 20px 40px rgba(0,0,0,0.8),
+    inset 0 0 0 2px #f0d060,
+    inset 0 0 0 4px #7a5000,
+    inset 0 0 0 7px #2a1800,
+    inset 0 0 0 9px #e8c040,
+    inset 0 0 0 12px #5a3800,
+    inset 0 0 0 14px #1a0e00;
+  border: 3px solid #7a5000;
+  border-radius: 2px;
+}
+
+.ornate-frame-empty::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 2px;
+  background: linear-gradient(135deg,
+    rgba(255,220,80,0.25) 0%,
+    rgba(255,200,40,0.05) 25%,
+    rgba(80,50,0,0.2) 50%,
+    rgba(255,200,40,0.1) 75%,
+    rgba(255,220,80,0.2) 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+.ornate-frame-empty::after {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(255,200,60,0.3);
+  border-radius: 1px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.empty-canvas-text {
+  font-family: Georgia, serif;
+  font-size: 13px;
+  color: #3a3020;
+  letter-spacing: 0.5px;
+  text-align: center;
+  position: relative;
+  z-index: 4;
+}
+
+.gallery-empty-label {
+  font-size: 11px;
+  color: #3a3a3a;
+  font-family: 'Arial', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+/* ── Search Dropdown ─────────────────────────────────── */
+.search-dropdown {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  right: 0;
+  background: var(--w98-white);
+  border-top:    2px solid var(--w98-dark);
+  border-left:   2px solid var(--w98-dark);
+  border-right:  2px solid var(--w98-white);
+  border-bottom: 2px solid var(--w98-white);
+  z-index: 100;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.search-result-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  cursor: pointer;
+  font-size: 11px;
+  font-family: 'Arial', sans-serif;
+  color: var(--w98-text);
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.search-result-item:hover,
+.search-result-item.active {
+  background: var(--w98-navy);
+  color: var(--w98-white);
+}
+
+.search-result-thumb {
+  width: 28px;
+  height: 28px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid var(--w98-dark);
+}
+
+.search-result-thumb-empty {
+  width: 28px;
+  height: 28px;
+  background: var(--w98-silver);
+  border: 1px solid var(--w98-dark);
+  flex-shrink: 0;
+}
+
+/* ── Statusbar ───────────────────────────────────────── */
+.win98-statusbar {
+  display: flex;
+  align-items: center;
+  padding: 2px 4px;
+  gap: 4px;
+  border-top: 1px solid var(--w98-dark);
+  flex-shrink: 0;
+  background: var(--w98-silver);
+}
+
+.win98-status-panel {
+  flex: 1;
+  border-top:    1px solid var(--w98-dark);
+  border-left:   1px solid var(--w98-dark);
+  border-right:  1px solid var(--w98-white);
+  border-bottom: 1px solid var(--w98-white);
+  padding: 1px 6px;
+  font-size: 11px;
+  font-family: 'Arial', sans-serif;
+  color: var(--w98-text);
+}
+
+/* ── Scrollbar ───────────────────────────────────────── */
+.panel-left::-webkit-scrollbar { width: 16px; }
+.panel-left::-webkit-scrollbar-track {
+  background: var(--w98-silver);
+  border-left: 1px solid var(--w98-dark);
+}
+.panel-left::-webkit-scrollbar-thumb {
+  background: var(--w98-silver);
+  border-top:    2px solid var(--w98-white);
+  border-left:   2px solid var(--w98-white);
+  border-right:  2px solid var(--w98-darker);
+  border-bottom: 2px solid var(--w98-darker);
 }
