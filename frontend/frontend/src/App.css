@@ -1,51 +1,23 @@
-/* ── Tokens ──────────────────────────────────────────── */
-:root {
-  /* Win98 chrome */
-  --w98-desktop:   #008080;
-  --w98-silver:    #c0c0c0;
-  --w98-dark:      #808080;
-  --w98-darker:    #404040;
-  --w98-white:     #ffffff;
-  --w98-navy:      #000080;
-  --w98-navy-end:  #1084d0;
-  --w98-text:      #000000;
-  --w98-disabled:  #808080;
-
-  /* Gallery interior */
-  --gallery-wall:  #0e0e0e;
-  --gallery-panel: #141414;
-
-  /* Placard */
-  --gold:          #c9a84c;
-  --gold-dim:      rgba(201,168,76,0.2);
-  --parchment:     #f0ece0;
-  --parchment-dim: #a89f8c;
-  --green:         #06d6a0;
+.counter {
+  font-size: 16px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 2px solid transparent;
+  transition: border-color 0.3s;
+  margin-bottom: 24px;
+  &:hover {
+    border-color: var(--accent-border);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
 }
 
-/* ── Reset ───────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-/* ── Desktop ─────────────────────────────────────────── */
-.win98-desktop {
-  width: 100vw;
-  height: 100vh;
-  background: var(--w98-desktop);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Arial', sans-serif;
-  font-size: 11px;
-
-  /* Subtle scanline texture on desktop */
-  background-image: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0,0,0,0.03) 2px,
-    rgba(0,0,0,0.03) 4px
-  ), radial-gradient(ellipse at center, #009090 0%, #006060 100%);
-}
+.hero {
+  position: relative;
 
 /* ── Win98 Window ────────────────────────────────────── */
 .win98-window {
