@@ -1,137 +1,207 @@
 import { useState } from 'react'
 import './App.css'
 import SearchBar from './components/SearchBar';
-import AudioFeaturesPanel from './components/MusicMetrix'
 import axios from 'axios';
-import type { AudioFeatures } from './components/MusicMetrix';
+
+interface Track {
+  id: string;
+  title: string;
+  artist: string;
+  album_art: string | null;       // 640x640 for main display
+  album_art_thumb: string | null; // 64x64 for search dropdown
+}
+
+interface AudioFeatures {
+  energy: number;
+  valence: number;
+  tempo?: number;
+}
 
 export default function App() {
+  const [selectedTrack, setSelectedTrack] = useState<Track | null>(null);
   const [audioFeatures, setAudioFeatures] = useState<AudioFeatures | null>(null);
   const [artworkUrl, setArtworkUrl] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
-  const [generationProgress, setGenerationProgress] = useState<string>('');
+  const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = useState<string>('Ready');
 
-  // 1. Fetches features for the metrics/visual bars
-  const handleTrackSelect = async (spotifyId: string) => {
+  const handleTrackSelect = async (spotifyId: string, track: Track) => {
+    setSelectedTrack(track);
+    setArtworkUrl(null);
+    setError(null);
+    setStatus(`Loading features for "${track.title}"...`);
     try {
-      // Reset image state when a new song is picked
-      setArtworkUrl(null);
       const response = await axios.get(`http://localhost:8080/api/v1/soundchart/features/${spotifyId}`);
-      console.log('Soundcharts API JSON Response:', response.data);
       setAudioFeatures(response.data.audio_features.audio_features);
-    } catch (err) {
-      console.error('Failed to fetch audio features', err);
+      setStatus(`"${track.title}" by ${track.artist} — ready to generate`);
+    } catch {
+      setError('Could not load audio features.');
+      setStatus('Error loading track features');
     }
   };
 
-  // 2. Transmits local features down to the stateless art generator
   const handleGenerateArtwork = async () => {
     if (!audioFeatures) return;
-
     setIsGenerating(true);
     setArtworkUrl(null);
-
-    // Initialize raw native browser WebSocket connection
-    const ws = new WebSocket('ws://localhost:8080/api/v1/ws/generate-art');
-
-    ws.onopen = () => {
-      // Send configurations to initiate backend loop processing
-      ws.send(JSON.stringify({
+    setError(null);
+    setStatus('Running genetic algorithm...');
+    try {
+      const response = await axios.post('http://localhost:8080/api/v1/generate-art', {
         energy: audioFeatures.energy,
         valence: audioFeatures.valence,
-        density: audioFeatures.tempo ? audioFeatures.tempo / 200 : audioFeatures.energy
-      }));
-    };
-
-    ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-
-      if (data.type === 'generation_frame') {
-        setGenerationProgress(`Evolving Canvas: Generation ${data.generation}/${data.total_generations}`);
-        // Swap out preview immediately using streaming base64 text injection
-        setArtworkUrl(data.frame);
-      }
-
-      else if (data.type === 'final_result') {
-        setGenerationProgress('Evolution complete! Rendered final high-res canvas.');
-        // Lock in final saved image disk static routing path
-        setArtworkUrl(`http://localhost:8080${data.image_url}`);
-        ws.close();
-      }
-
-      else if (data.type === 'error') {
-        console.error('GA Engine Error:', data.message);
-        ws.close();
-      }
-    };
-
-    ws.onclose = () => {
+        density: audioFeatures.tempo ? audioFeatures.tempo / 200 : audioFeatures.energy,
+      });
+      setArtworkUrl(`http://localhost:8080${response.data.image_url}`);
+      setStatus(`Artwork generated for "${selectedTrack?.title}"`);
+    } catch {
+      setError('Generation failed. Try again.');
+      setStatus('Generation failed');
+    } finally {
       setIsGenerating(false);
-    };
-
-    ws.onerror = (error) => {
-      console.error('WebSocket Exception occurred:', error);
-      setIsGenerating(false);
-    };
+    }
   };
 
   return (
-    <div style={{ display: 'flex', height: '100vh', backgroundColor: '#16171d', color: '#f3f4f6' }}>
-      {/* Left panel */}
-      <div style={{ width: '50%', padding: '2rem', borderRight: '1px solid #2e303a', overflowY: 'auto' }}>
-        <SearchBar onSelect={handleTrackSelect} />
+    <div className="win98-desktop">
+      <div className="win98-window">
 
-        {audioFeatures && (
-          <div style={{ marginTop: '2rem' }}>
-            <AudioFeaturesPanel features={audioFeatures} />
+        {/* ── Title Bar ── */}
+        <div className="win98-titlebar">
+          <div className="win98-titlebar-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round">
+              <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+            </svg>
+          </div>
+          <span className="win98-titlebar-text">Genova — Music Artwork Generator</span>
+          <div className="win98-titlebar-buttons">
+            <div className="win98-btn-chrome">_</div>
+            <div className="win98-btn-chrome">□</div>
+            <div className="win98-btn-chrome">✕</div>
+          </div>
+        </div>
 
-            <button
-              onClick={handleGenerateArtwork}
-              disabled={isGenerating}
-              style={{
-                marginTop: '2rem',
-                padding: '12px 24px',
-                fontSize: '16px',
-                fontWeight: 'bold',
-                borderRadius: '6px',
-                border: 'none',
-                backgroundColor: isGenerating ? '#4b5563' : '#c084fc',
-                color: '#16171d',
-                cursor: isGenerating ? 'not-allowed' : 'pointer',
-                transition: 'background-color 0.2s'
-              }}
-            >
-              {isGenerating ? 'Evolving Live via GA...' : 'Generate Musical Artwork'}
-            </button>
-          </div>
-        )}
-      </div>
+        {/* ── Menu Bar ── */}
+        <div className="win98-menubar">
+          <span className="win98-menu-item">File</span>
+          <span className="win98-menu-item">Edit</span>
+          <span className="win98-menu-item">View</span>
+          <span className="win98-menu-item">Generate</span>
+          <span className="win98-menu-item">Help</span>
+        </div>
 
-      {/* Right panel */}
-      <div style={{ width: '50%', padding: '2rem', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-        {artworkUrl ? (
-          <div style={{ textAlign: 'center' }}>
-            <img
-              src={artworkUrl}
-              alt="Evolved Fluid Canvas"
-              style={{
-                width: '400px',
-                height: '400px',
-                objectFit: 'cover',
-                borderRadius: '12px',
-                boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.5)',
-                border: isGenerating ? '2px solid #c084fc' : 'none'
-              }}
-            />
-            <p style={{ marginTop: '1rem', color: '#c084fc', fontSize: '14px', fontWeight: '500' }}>
-              {generationProgress}
-            </p>
+        {/* ── Body ── */}
+        <div className="win98-body">
+
+          {/* Left panel */}
+          <div className="panel-left">
+
+            {/* Search section */}
+            <div className="panel-section">
+              <div style={{ fontSize: 11, fontFamily: 'Arial', marginBottom: 4, color: '#000' }}>
+                Track Search:
+              </div>
+              <SearchBar onSelect={handleTrackSelect} />
+            </div>
+
+            {/* Track info groupbox */}
+            <div className="panel-section">
+              <div className="win98-groupbox">
+                <span className="win98-groupbox-label">Track Info</span>
+                {selectedTrack ? (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                    {selectedTrack.album_art ? (
+                      <img
+                        src={selectedTrack.album_art}
+                        alt={selectedTrack.title}
+                        className="track-album-thumb"
+                      />
+                    ) : (
+                      <div className="track-album-empty">No image</div>
+                    )}
+                    <div className="track-title-text">{selectedTrack.title}</div>
+                    <div className="track-artist-text">{selectedTrack.artist}</div>
+                  </div>
+                ) : (
+                  <div className="empty-state-text">No track selected</div>
+                )}
+              </div>
+            </div>
+
+            {/* Actions groupbox */}
+            <div className="panel-section">
+              <div className="win98-groupbox">
+                <span className="win98-groupbox-label">Actions</span>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 6, paddingTop: 4 }}>
+                  <button
+                    className="win98-push-btn"
+                    onClick={handleGenerateArtwork}
+                    disabled={!audioFeatures || isGenerating}
+                  >
+                    {isGenerating ? (
+                      <><span className="spinner" /> Generating...</>
+                    ) : (
+                      '🎨 Generate Artwork'
+                    )}
+                  </button>
+                  {artworkUrl && (
+                    <button
+                      className="win98-push-btn"
+                      onClick={() => { setArtworkUrl(null); setSelectedTrack(null); setAudioFeatures(null); setStatus('Ready'); }}
+                    >
+                      🗑 Clear
+                    </button>
+                  )}
+                </div>
+                {error && <p className="error-msg">{error}</p>}
+              </div>
+            </div>
+
           </div>
-        ) : (
-          <div style={{ color: '#6b6375', textAlign: 'center' }}>
-            <p>Select a track and generate art to watch the real-time visual evolution wrapper.</p>
+
+          {/* Right panel: gallery wall */}
+          <div className="panel-right">
+            {artworkUrl ? (
+              <div className="gallery-scene">
+                <div className="ornate-frame">
+                  <img
+                    src={artworkUrl}
+                    alt="Generated artwork"
+                    className="gallery-artwork"
+                  />
+                </div>
+                <div className="gallery-placard">
+                  <p className="gallery-placard-title">{selectedTrack?.title}</p>
+                  <p className="gallery-placard-sub">{selectedTrack?.artist} · Genova · {new Date().getFullYear()}</p>
+                </div>
+              </div>
+            ) : (
+              <div className="gallery-empty-scene">
+                <div className="ornate-frame-empty">
+                  <p className="empty-canvas-text">
+                    {isGenerating ? 'Generating…' : 'Awaiting artwork'}
+                  </p>
+                </div>
+                <p className="gallery-empty-label">
+                  {isGenerating ? 'Running genetic algorithm...' : 'Select a track and generate to exhibit'}
+                </p>
+              </div>
+            )}
           </div>
-        )}
+
+        </div>
+
+        {/* ── Status Bar ── */}
+        <div className="win98-statusbar">
+          <div className="win98-status-panel">{status}</div>
+          <div className="win98-status-panel" style={{ flex: 'none', minWidth: 120 }}>
+            {selectedTrack ? 'Track loaded' : 'No track'}
+          </div>
+          <div className="win98-status-panel" style={{ flex: 'none', minWidth: 80 }}>
+            Genova v1.0
+          </div>
+        </div>
+
       </div>
     </div>
   );
