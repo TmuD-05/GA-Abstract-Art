@@ -2,6 +2,13 @@
 
 **Genova turns a song into a one-of-a-kind piece of generative art.**
 
+<img width="1283" height="807" alt="Screenshot 2026-07-01 at 6 20 49 AM" src="https://github.com/user-attachments/assets/16af0aa3-a0bc-4fdc-bfe2-244667aa624c" />
+
+<img width="1173" height="765" alt="Screenshot 2026-07-01 at 6 21 17 AM" src="https://github.com/user-attachments/assets/82240988-6d94-43d5-8997-df1c31b8f466" />
+
+<img width="1125" height="713" alt="Screenshot 2026-07-01 at 6 23 52 AM" src="https://github.com/user-attachments/assets/09090169-ad94-4497-830a-e7dd1b492bb7" />
+
+
 Search for a track, pull its audio characteristics (energy, valence, tempo), and watch a genetic algorithm evolve a fluid, noise-based image whose colour palette, turbulence, and detail level are shaped by the music. The whole thing is wrapped in a Windows 98 × dark-gallery interface — part retro desktop app, part exhibition wall.
 
 ---
